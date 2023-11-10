@@ -48,6 +48,7 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
   var _currentSelectedSize = "Select size";
   late final TextEditingController itemNameController;
   late final TextEditingController itemPriceController;
+  late final TextEditingController itemOldController;
   late final TextEditingController itemVolumeController;
   late final TextEditingController itemDescriptionController;
 
@@ -67,6 +68,7 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
     }
     itemNameController = TextEditingController();
     itemPriceController = TextEditingController();
+    itemOldController = TextEditingController();
     itemVolumeController = TextEditingController();
     itemDescriptionController = TextEditingController();
   }
@@ -250,6 +252,7 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
         'store': profileController.storeName,
         'category': _currentSelectedCategory,
         'size': _currentSelectedSize,
+        'old_price': itemOldController.text,
         'new_price': itemPriceController.text,
         'picture': await MultipartFile.fromFile(file.path, filename: fileName),
         "volume": itemVolumeController.text.trim(),
@@ -296,6 +299,7 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
     // TODO: implement dispose
     itemNameController.dispose();
     itemPriceController.dispose();
+    itemOldController.dispose();
     itemVolumeController.dispose();
     itemDescriptionController.dispose();
     super.dispose();
@@ -404,12 +408,39 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
                       child: TextFormField(
+                        controller: itemOldController,
+                        cursorColor: primaryYellow,
+                        cursorRadius: const Radius.elliptical(10, 10),
+                        cursorWidth: 10,
+                        decoration: InputDecoration(
+                            labelText: "Old Price",
+                            labelStyle:
+                                const TextStyle(color: defaultTextColor2),
+                            focusColor: primaryYellow,
+                            fillColor: primaryYellow,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: primaryYellow, width: 2),
+                                borderRadius: BorderRadius.circular(12)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12))),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Please enter price";
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: TextFormField(
                         controller: itemPriceController,
                         cursorColor: primaryYellow,
                         cursorRadius: const Radius.elliptical(10, 10),
                         cursorWidth: 10,
                         decoration: InputDecoration(
-                            labelText: "Price",
+                            labelText: "New Price",
                             labelStyle:
                                 const TextStyle(color: defaultTextColor2),
                             focusColor: primaryYellow,
