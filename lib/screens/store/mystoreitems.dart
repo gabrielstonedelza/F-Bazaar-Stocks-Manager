@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stock_manager/controller/storeitemscontroller.dart';
+import 'package:stock_manager/screens/store/updatestore.dart';
 
 import '../../statics/appcolors.dart';
 
@@ -88,7 +89,50 @@ class _MyStoreItemsState extends State<MyStoreItems> {
                                         : Image.asset(
                                             "assets/images/reject.png",
                                             width: 30,
-                                            height: 30)
+                                            height: 30),
+                                const Divider(),
+                                items['item_verified']
+                                    ? TextButton(
+                                        onPressed: () {
+                                          Get.to(() => UpdateStoreItem(
+                                                id: controller
+                                                        .allMyStoreItems[index]
+                                                    ['id'],
+                                                name: controller
+                                                        .allMyStoreItems[index]
+                                                    ['name'],
+                                                store: controller
+                                                        .allMyStoreItems[index]
+                                                    ['store'],
+                                                category: controller
+                                                        .allMyStoreItems[index]
+                                                    ['category'],
+                                                size: controller
+                                                        .allMyStoreItems[index]
+                                                    ['size'],
+                                                old_price: controller
+                                                        .allMyStoreItems[index]
+                                                    ['old_price'],
+                                                new_price: controller
+                                                        .allMyStoreItems[index]
+                                                    ['new_price'],
+                                                picture: controller
+                                                        .allMyStoreItems[index]
+                                                    ['picture'],
+                                                volume: controller
+                                                    .allMyStoreItems[index]
+                                                        ['volume']
+                                                    .toString(),
+                                                description: controller
+                                                        .allMyStoreItems[index]
+                                                    ['description'],
+                                              ));
+                                        },
+                                        child: const Text("Update Item",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      )
+                                    : Container()
                               ],
                             ),
                           ),
