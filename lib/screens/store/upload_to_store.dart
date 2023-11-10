@@ -44,7 +44,6 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
   List sizes = ["Select size", "Small", "Medium", "Large", "Extra Large"];
 
   bool isPosting = false;
-  var _currentSelectedStore = "Select store";
   var _currentSelectedCategory = "Select category";
   var _currentSelectedSize = "Select size";
   late final TextEditingController itemNameController;
@@ -508,32 +507,6 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    isPosting
-                        ? const LoadingUi()
-                        : RawMaterialButton(
-                            onPressed: () {
-                              _startPosting();
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              } else {
-                                _uploadAndSaveItem(imageFile!);
-                              }
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            elevation: 8,
-                            fillColor: primaryYellow,
-                            splashColor: secondaryYellow,
-                            child: const Text(
-                              "Upload",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.white),
-                            ),
-                          ),
-                    //   show uploaded image here
-
                     imageFile != null
                         ? SizedBox(
                             width: 400,
@@ -541,6 +514,33 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
                             child: Image.file(imageFile!),
                           )
                         : Container(),
+                    isPosting
+                        ? const LoadingUi()
+                        : imageFile != null
+                            ? RawMaterialButton(
+                                onPressed: () {
+                                  _startPosting();
+                                  if (!_formKey.currentState!.validate()) {
+                                    return;
+                                  } else {
+                                    _uploadAndSaveItem(imageFile!);
+                                  }
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                elevation: 8,
+                                fillColor: primaryYellow,
+                                splashColor: secondaryYellow,
+                                child: const Text(
+                                  "Upload",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white),
+                                ),
+                              )
+                            : Container(),
+                    //   show uploaded image here
                     const SizedBox(height: 40),
                   ],
                 ),
@@ -548,12 +548,6 @@ class _UploadItemToStoreState extends State<UploadItemToStore> {
             )
           ],
         ));
-  }
-
-  void _onDropDownItemSelectedStore(newValueSelected) {
-    setState(() {
-      _currentSelectedStore = newValueSelected;
-    });
   }
 
   void _onDropDownItemSelectedCategory(newValueSelected) {
