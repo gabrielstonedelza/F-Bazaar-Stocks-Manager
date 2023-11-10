@@ -64,6 +64,14 @@ class _LoginViewState extends State<LoginView> {
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Image.asset("assets/images/inventory-management.png",
+            width: 100, height: 100),
+        const Padding(
+          padding: EdgeInsets.only(top: 8.0, bottom: 9),
+          child: Center(
+              child: Text("FBazaar Stock Manager",
+                  style: TextStyle(fontWeight: FontWeight.bold))),
+        ),
         Padding(
           padding: const EdgeInsets.all(18.0),
           child: Form(

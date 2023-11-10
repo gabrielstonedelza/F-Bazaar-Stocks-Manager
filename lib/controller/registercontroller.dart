@@ -10,16 +10,19 @@ import '../statics/appcolors.dart';
 class RegistrationController extends GetxController {
   bool isPosting = false;
   late List allUsers = [];
-
   late List allEmails = [];
   late List allUsernames = [];
   late List allPhoneNumbers = [];
+
+  late List allStores = [];
+  late List allStoreNames = [];
   bool isLoading = false;
 
   @override
   void onInit() {
     super.onInit();
     getAllUsers();
+    getAllStores();
   }
 
   Future<void> getAllUsers() async {
@@ -59,14 +62,46 @@ class RegistrationController extends GetxController {
     }
   }
 
+  Future<void> getAllStores() async {
+    try {
+      isLoading = true;
+      const profileLink = "https://f-bazaar.com/store/get_all_stores/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        allStores = jsonData;
+        for (var i in allStores) {
+          if (!allStoreNames.contains(i['name'])) {
+            allStoreNames.add(i['name']);
+          }
+        }
+
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
   Future<void> registerUser(
-    String name,
-    String uname,
-    String email,
-    String phoneNumber,
-    String uPassword,
-    String uRePassword,
-  ) async {
+      String name,
+      String uname,
+      String email,
+      String phoneNumber,
+      String uPassword,
+      String uRePassword,
+      String store,
+      String location) async {
     const registrationUrl = "https://f-bazaar.com/auth/users/";
     final myLogin = Uri.parse(registrationUrl);
     http.Response response = await http.post(myLogin, headers: {
@@ -75,6 +110,8 @@ class RegistrationController extends GetxController {
       "name": name,
       "username": uname,
       "email": email,
+      "store": store,
+      "location": location,
       "phone": phoneNumber,
       "password": uPassword,
       "re_password": uRePassword,

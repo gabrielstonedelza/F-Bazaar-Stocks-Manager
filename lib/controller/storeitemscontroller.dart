@@ -16,6 +16,9 @@ class StoreItemsController extends GetxController {
   late List otherItems = [];
   late List allDrinks = [];
   late List allWater = [];
+  late List allMyStores = [];
+  late List allStores = [];
+  late List allStoresNames = [];
 
   late List customersRemarks = [];
   late List customersRatings = [];
@@ -27,6 +30,93 @@ class StoreItemsController extends GetxController {
   late String wholesalePrice = "";
   late String itemPic = "";
   late String description = "";
+  late List allMyStoreItems = [];
+
+  Future<void> getAllOtherStoreItems(String token) async {
+    try {
+      isLoading = true;
+
+      const profileLink = "https://f-bazaar.com/store_api/other_items/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Token $token"
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        otherItems.assignAll(jsonData);
+
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
+  Future<void> getAllStores(String token) async {
+    try {
+      isLoading = true;
+      const profileLink = "https://f-bazaar.com/users/users/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Token $token"
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        allStores.assignAll(jsonData);
+        // print(response.body);
+        for (var i in allStores) {
+          if (!allStoresNames.contains(i['store'])) {
+            allStoresNames.add(i['store']);
+          }
+        }
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
+  Future<void> getAllMyStoreItems(String token) async {
+    try {
+      isLoading = true;
+      const profileLink = "https://f-bazaar.com/store_api/my_items/";
+      var link = Uri.parse(profileLink);
+      http.Response response = await http.get(link, headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Token $token"
+      });
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
+        allMyStoreItems.assignAll(jsonData);
+        update();
+      } else {
+        if (kDebugMode) {
+          print(response.body);
+        }
+      }
+    } catch (e) {
+      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
 
   Future<void> getAllDrinks(String token) async {
     try {
@@ -125,34 +215,6 @@ class StoreItemsController extends GetxController {
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
         promotionItems.assignAll(jsonData);
-        update();
-      } else {
-        if (kDebugMode) {
-          print(response.body);
-        }
-      }
-    } catch (e) {
-      // Get.snackbar("Sorry","something happened or please check your internet connection",snackPosition: SnackPosition.BOTTOM);
-    } finally {
-      isLoading = false;
-      update();
-    }
-  }
-
-  Future<void> getAllOtherStoreItems(String token) async {
-    try {
-      isLoading = true;
-
-      const profileLink = "https://f-bazaar.com/store_api/other_items/";
-      var link = Uri.parse(profileLink);
-      http.Response response = await http.get(link, headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": "Token $token"
-      });
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
-        otherItems.assignAll(jsonData);
-
         update();
       } else {
         if (kDebugMode) {

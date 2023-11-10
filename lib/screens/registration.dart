@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:pinput/pinput.dart';
+import 'package:stock_manager/controller/storeitemscontroller.dart';
 
 import '../../statics/appcolors.dart';
 
@@ -24,8 +25,11 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   final RegistrationController controller = Get.find();
+  final StoreItemsController storeItemsController = Get.find();
   late final TextEditingController _usernameController;
   late final TextEditingController nameController;
+  late final TextEditingController storeController;
+  late final TextEditingController locationController;
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   late final TextEditingController _rePasswordController;
@@ -36,6 +40,8 @@ class _RegistrationState extends State<Registration> {
   final FocusNode nameFocusNode = FocusNode();
   final FocusNode _usernameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode storeFocusNode = FocusNode();
+  final FocusNode locationFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _rePasswordFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
@@ -136,7 +142,8 @@ class _RegistrationState extends State<Registration> {
                 const Padding(
                   padding: EdgeInsets.only(top: 18.0, bottom: 18),
                   child: Center(
-                      child: Text("Enter the OTP sent to your phone and email",
+                      child: Text(
+                          "Enter the OTP sent to your phone and email,please check your spam too.",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: defaultTextColor1))),
@@ -192,7 +199,8 @@ class _RegistrationState extends State<Registration> {
                                 .trim()
                                 .replaceFirst("0", '+233');
                             sendSms.sendMySms(num, "FBazaar", "Your code $oTP");
-                            Get.snackbar("Check Phone", "code was sent again",
+                            Get.snackbar("Check Phone and email",
+                                "code was sent again,don't forget to check your spam too.",
                                 backgroundColor: defaultYellow,
                                 colorText: defaultTextColor1,
                                 duration: const Duration(seconds: 5));
@@ -223,6 +231,8 @@ class _RegistrationState extends State<Registration> {
     // TODO: implement initState
     super.initState();
     nameController = TextEditingController();
+    storeController = TextEditingController();
+    locationController = TextEditingController();
     _usernameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
@@ -234,6 +244,8 @@ class _RegistrationState extends State<Registration> {
 
   @override
   void dispose() {
+    storeController.dispose();
+    locationController.dispose();
     nameController.dispose();
     _usernameController.dispose();
     _emailController.dispose();
@@ -352,6 +364,64 @@ class _RegistrationState extends State<Registration> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Enter email";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: TextFormField(
+                      controller: storeController,
+                      focusNode: storeFocusNode,
+                      decoration: InputDecoration(
+                          labelText: "Store Name",
+                          labelStyle: const TextStyle(color: defaultTextColor2),
+                          focusColor: defaultTextColor2,
+                          fillColor: defaultTextColor2,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: defaultTextColor2, width: 2),
+                              borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12))),
+                      cursorColor: defaultTextColor2,
+                      style: const TextStyle(color: defaultTextColor2),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter store name";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12.0),
+                    child: TextFormField(
+                      controller: locationController,
+                      focusNode: locationFocusNode,
+                      decoration: InputDecoration(
+                          labelText: "Location",
+                          labelStyle: const TextStyle(color: defaultTextColor2),
+                          focusColor: defaultTextColor2,
+                          fillColor: defaultTextColor2,
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: defaultTextColor2, width: 2),
+                              borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12))),
+                      cursorColor: defaultTextColor2,
+                      style: const TextStyle(color: defaultTextColor2),
+                      keyboardType: TextInputType.text,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter location";
                         } else {
                           return null;
                         }
@@ -506,35 +576,6 @@ class _RegistrationState extends State<Registration> {
                                 },
                               ),
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(bottom: 10.0),
-                            //   child: Container(
-                            //     decoration: BoxDecoration(
-                            //         borderRadius: BorderRadius.circular(12),
-                            //         border: Border.all(
-                            //             color: Colors.grey, width: 1)),
-                            //     child: Padding(
-                            //       padding: const EdgeInsets.only(
-                            //           left: 10.0, right: 10),
-                            //       child: DropdownButton(
-                            //         isExpanded: true,
-                            //         underline: const SizedBox(),
-                            //         items: waterSupplyAgreement
-                            //             .map((dropDownStringItem) {
-                            //           return DropdownMenuItem(
-                            //             value: dropDownStringItem,
-                            //             child: Text(dropDownStringItem),
-                            //           );
-                            //         }).toList(),
-                            //         onChanged: (newValueSelected) {
-                            //           _onDropDownItemSelectedSupplyAgreement(
-                            //               newValueSelected);
-                            //         },
-                            //         value: _currentSupplyAgreement,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         )
                       : Container(),
@@ -561,6 +602,14 @@ class _RegistrationState extends State<Registration> {
                                         snackPosition: SnackPosition.BOTTOM,
                                         backgroundColor: Colors.red);
                                     return;
+                                  } else if (storeItemsController.allStoresNames
+                                      .contains(storeController.text)) {
+                                    Get.snackbar("Store Error",
+                                        "A store with the same name already exists",
+                                        colorText: defaultTextColor1,
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.red);
+                                    return;
                                   } else {
                                     controller.registerUser(
                                         nameController.text.trim(),
@@ -568,7 +617,9 @@ class _RegistrationState extends State<Registration> {
                                         _emailController.text.trim(),
                                         _phoneNumberController.text.trim(),
                                         _passwordController.text.trim(),
-                                        _rePasswordController.text.trim());
+                                        _rePasswordController.text.trim(),
+                                        storeController.text.trim(),
+                                        locationController.text.trim());
                                   }
                                 }
                               },

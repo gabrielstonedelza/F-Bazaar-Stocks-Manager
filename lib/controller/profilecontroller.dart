@@ -12,6 +12,7 @@ class ProfileController extends GetxController {
   late String profilePicture = "";
   late String phoneNumber = "";
   late String userId = "";
+  late String storeName = "";
 
   Future<void> getMyProfile(String token) async {
     const profileLink = "https://f-bazaar.com/profile/profile/";
@@ -28,6 +29,7 @@ class ProfileController extends GetxController {
       username = jsonData['get_username'];
       profilePicture = jsonData['get_profile_pic'];
       phoneNumber = jsonData['get_phone'];
+      storeName = jsonData['get_user_store_name'];
       update();
     } else {
       if (kDebugMode) {
